@@ -4,16 +4,11 @@ const todoItemsList = document.querySelector('.todo-items');
 
 let todos = [];
 
-todoForm.addEventListener('submit', function(event) {
-  event.preventDefault();
-  addTodo(todoInput.value); 
-});
-
 
 function addTodo(item) {
   if (item !== '') {
     const todo = {
-      id: Date.now(),
+      id: Date.now(),a
       name: item,
       completed: false
     };
@@ -97,3 +92,13 @@ todoItemsList.addEventListener('click', function(event) {
     deleteTodo(event.target.parentElement.getAttribute('data-key'));
   }
 });
+
+todoForm.addEventListener('submit', function(event) {
+  event.preventDefault();
+  addTodo(todoInput.value); 
+});
+
+window.onload = function getFromLocalStorage(todos) {
+  localStorage.setItem("todos", JSON.stringify(todos));
+  renderTodos(todos); 
+};
