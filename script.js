@@ -101,7 +101,7 @@ function fetchToDos() {
       }
 
 window.addEventListener("load", function() { 
-  if (localStorage === null) {
+  if(localStorage === null) {
     fetchToDos();
   } 
 })    
