@@ -4,16 +4,21 @@ const todoItemsList = document.querySelector('.todo-items');
 
 let todos = [];
 
+todoForm.addEventListener('submit', function(event) {
+  
+  event.preventDefault();
+  addTodo(todoInput.value); 
+});
+
 
 function addTodo(item) {
   if (item !== '') {
     const todo = {
-      id: Date.now(),a
+      id: Date.now(),
       name: item,
       completed: false
     };
 
-    
     todos.push(todo);
     addToLocalStorage(todos); 
 
@@ -21,15 +26,15 @@ function addTodo(item) {
   }
 }
 
-
 function renderTodos(todos) {
   todoItemsList.innerHTML = '';
+
   todos.forEach(function(item) {
     const checked = item.completed ? 'checked': null;
+
     const li = document.createElement('li');
     li.setAttribute('class', 'item');
     li.setAttribute('data-key', item.id);
-    
     if (item.completed === true) {
       li.classList.add('checked');
     }
@@ -39,7 +44,7 @@ function renderTodos(todos) {
       ${item.name}
       <button class="delete-button">X</button>
     `;
-    
+  
     todoItemsList.append(li);
   });
 
@@ -50,7 +55,6 @@ function addToLocalStorage(todos) {
   renderTodos(todos);
 }
 
-
 function getFromLocalStorage() {
   const reference = localStorage.getItem('todos');
   if (reference) {
@@ -58,7 +62,6 @@ function getFromLocalStorage() {
     renderTodos(todos);
   }
 }
-
 
 function toggle(id) {
   todos.forEach(function(item) {
@@ -70,35 +73,35 @@ function toggle(id) {
   addToLocalStorage(todos);
 }
 
-
 function deleteTodo(id) {
   todos = todos.filter(function(item) {
     return item.id != id;
   });
 
-  
   addToLocalStorage(todos);
 }
-
 
 getFromLocalStorage();
 
 todoItemsList.addEventListener('click', function(event) {
-  
   if (event.target.type === 'checkbox') {
     toggle(event.target.parentElement.getAttribute('data-key'));
   }
+
   if (event.target.classList.contains('delete-button')) {
     deleteTodo(event.target.parentElement.getAttribute('data-key'));
   }
-});
+}); 
 
-todoForm.addEventListener('submit', function(event) {
-  event.preventDefault();
-  addTodo(todoInput.value); 
-});
 
-window.onload = function getFromLocalStorage(todos) {
-  localStorage.setItem("todos", JSON.stringify(todos));
-  renderTodos(todos); 
-};
+function fetchToDos() {
+  axios.get("https://jsonplaceholder.typicode.com/todos/1")
+      .then(response => response.json()) 
+      .then(todos => console.log(todos))
+      }
+
+window.addEventListener("load", function() { 
+  if (localStorage === null) {
+    fetchToDos();
+  } 
+})    
