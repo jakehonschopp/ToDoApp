@@ -90,18 +90,26 @@ todoItemsList.addEventListener('click', function(event) {
 
   if (event.target.classList.contains('delete-button')) {
     deleteTodo(event.target.parentElement.getAttribute('data-key'));
-  }
+  } 
 }); 
 
 
-function fetchToDos() {
-  axios.get("https://jsonplaceholder.typicode.com/todos/1")
-      .then(response => response.json()) 
-      .then(todos => console.log(todos))
+function fillEmptyTodos() {
+  axios.get("https://jsonplaceholder.typicode.com/todos/")
+      .then(response => {
+      const responseData = response.data;
+      for (let i =0; i < 5; i++) { 
+      console.log(responseData[i].title);
+      addTodo(responseData[i].title); 
       }
+    })
+     .catch(error => console.error(error)); 
+};   
+ 
 
 window.addEventListener("load", function() { 
-  if(localStorage === null) {
-    fetchToDos();
-  } 
-})    
+  console.log(localStorage.getItem("todos") === '[]');
+  if(!localStorage.getItem("todos") || localStorage.getItem("todos") === '[]') {
+    fillEmptyTodos()
+  }
+});    
