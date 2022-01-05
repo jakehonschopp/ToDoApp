@@ -81,7 +81,6 @@ function deleteTodo(id) {
   addToLocalStorage(todos);
 }
 
-getFromLocalStorage();
 
 todoItemsList.addEventListener('click', function(event) {
   if (event.target.type === 'checkbox') {
@@ -111,5 +110,7 @@ window.addEventListener("load", function() {
   console.log(localStorage.getItem("todos") === '[]');
   if(!localStorage.getItem("todos") || localStorage.getItem("todos") === '[]') {
     fillEmptyTodos()
+  } else {
+    getFromLocalStorage();
   }
 });    
